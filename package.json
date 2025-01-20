@@ -1,9 +1,10 @@
 {
-  "name": "image_hosting",
+  "name": "s3-image-hosting",
   "version": "1.0.0",
-  "description": "",
+  "description": "纯前端、浏览器可用、超轻量的基于对象存储的图床管理工具",
   "source": "src/index.ts",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
   "type": "module",
   "types": "dist/types.d.ts",
   "scripts": {
@@ -17,9 +18,13 @@
     "test:tag": "vitest run src/test/tag.test.ts",
     "test:metadata": "vitest run src/test/metadata.test.ts"
   },
-  "keywords": [],
+  "keywords": ["cos","oss","s3","图床","image hosting","对象储存","图片管理"],
   "author": "2061360308",
   "license": "MIT",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "devDependencies": {
     "@aws-sdk/types": "^3.731.0",
     "@parcel/config-default": "^2.13.3",

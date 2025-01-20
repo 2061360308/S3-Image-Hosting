@@ -3,6 +3,8 @@ import { createMatadata } from "./methods/metadata";
 import { uploadImageStatic } from "./methods/uploadImage";
 import { deleteImageStatic } from "./methods/deleteImage";
 
+import { getImageMetadata, getImageSignedUrl } from "./methods/base";
+
 import {
   getAllAlbumNames, // 从 相册 索引文件中获取所有相册名称
   addAlbum, // 添加 相册
@@ -28,6 +30,8 @@ class S3ImageHostingMethods {
   public static createMatadataStatic = createMatadata;
   public static uploadImageStatic = uploadImageStatic;
   public static deleteImageStatic = deleteImageStatic;
+  public static getImageMetadataStatic = getImageMetadata;
+  public static getImageSignedUrlStatic = getImageSignedUrl;
   public static getAllAlbumNamesStatic = getAllAlbumNames;
   public static addAlbumStatic = addAlbum;
   public static removeAlbumStatic = removeAlbum;

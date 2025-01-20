@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { imageHosting } from "./base";
+import { imageHosting } from "./global";
 import fs from "fs";
 
 describe("Upload Image", () => {
@@ -12,7 +12,7 @@ describe("Upload Image", () => {
 
     let createDate = new Date();
     // 读取图片文件
-    const image = fs.readFileSync("./images/icon-144x144.png");
+    const image = fs.readFileSync("./docs/images/icon-144x144.png");
     const result = await imageHosting.uploadImage(
       image,
       "png",

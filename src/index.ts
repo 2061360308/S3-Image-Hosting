@@ -1,7 +1,12 @@
-import { ImageType, PaginatedResult, Settings } from "./types/index";
+import {
+  ImageType,
+  PaginatedResult,
+  Settings,
+  UploadImageResult,
+} from "./types/index";
 import S3ImageHostingMethods from "./methods";
-
 import { S3Client } from "@aws-sdk/client-s3";
+import { Metadata } from "./methods/metadata";
 
 class S3ImageHosting extends S3ImageHostingMethods {
   settings: Settings;
@@ -28,7 +33,11 @@ class S3ImageHosting extends S3ImageHostingMethods {
      * @param key The key of the image
      * @returns A boolean value
      */
-    return S3ImageHosting.isExistImageStatic(this.client, this.settings.bucket, key);
+    return S3ImageHosting.isExistImageStatic(
+      this.client,
+      this.settings.bucket,
+      key
+    );
   };
 
   public uploadImage = async (
@@ -38,7 +47,7 @@ class S3ImageHosting extends S3ImageHostingMethods {
     update: Date,
     album: string,
     tags: string[]
-  ): Promise<boolean> => {
+  ): Promise<UploadImageResult> => {
     /**
      * Upload an image to the bucket
      * @param fileData The image data  type: Blob | Buffer | Uint8Array
@@ -65,16 +74,45 @@ class S3ImageHosting extends S3ImageHostingMethods {
     );
   };
 
-  public deleteImage = async (key: string): Promise<boolean> => {
+  public deleteImage = async (hash: string): Promise<boolean> => {
     /**
      * Delete an image from the bucket
-     * @param key The key of the image
+     * @param hash The key of the image
      * @returns A boolean value
      */
     return S3ImageHosting.deleteImageStatic(
       this.client,
       this.settings.bucket,
-      key
+      hash
+    );
+  };
+
+  public getImageMetadata = async (hash: string): Promise<Metadata> => {
+    /**
+     * Get the metadata of the image
+     * @param hash The hash of the image
+     * @returns A string
+     */
+
+    return await  S3ImageHosting.getImageMetadataStatic(
+      this.client,
+      this.settings.bucket,
+      hash
+    );
+  }
+
+  public getImageSignedUrl = async (hash: string, expiresIn: number = 300): Promise<string> => {
+    /**
+     * Get the signed url of the image
+     * @param hash The hash of the image
+     * @param expiresIn The expiration time of the url, default 300 seconds
+     * @returns A string
+     */
+    return S3ImageHosting.getImageSignedUrlStatic(
+      this.client,
+      this.settings.bucket,
+      hash,
+      expiresIn
     );
   };
 

@@ -7,6 +7,7 @@ import {
   AlbumNameOverflowError,
 } from "../errors";
 import { toBase64, fromBase64 } from "../utils/base";
+import { IMetadata } from "../types";
 
 export const generateMetadata = (data: Record<string, string>): Metadata => {
   return new Metadata(
@@ -26,7 +27,7 @@ export const createMatadata = (
   return new Metadata(create, update, album, tags);
 };
 
-export class Metadata {
+export class Metadata implements IMetadata {
   createdAt: Date;
   updatedAt: Date;
   album: string = "";

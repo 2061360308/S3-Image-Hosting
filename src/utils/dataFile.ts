@@ -4,6 +4,7 @@
  */
 
 import {
+  DeleteObjectCommand,
   GetObjectCommand,
   ListObjectsV2Command,
   PutObjectCommand,
@@ -133,7 +134,22 @@ export const updateDataFileItems = async (
     data = data.filter((item) => !value.includes(item));
   }
 
-  // 上传数据
+  // 如果数据为空，直接删除远程文件
+  if (data.length === 0) {
+    try {
+      const command = new DeleteObjectCommand({
+        Bucket: bucketName,
+        Key: key,
+      });
+      await client.send(command);
+      return true;
+    } catch (error) {
+      console.error(`Error deleting data file ${key}:`, error);
+      return false;
+    }
+  }
+
+  // 如果数据不为空，则需要上传数据
   try {
     const uploadParams = {
       Bucket: bucketName,
@@ -157,7 +173,6 @@ export const listDateFilesItems = async (
   page: number,
   pageSize: number
 ): Promise<PaginatedResult<string>> => {
-
   let result: Array<string> = [];
 
   let start = (page - 1) * pageSize;
@@ -169,7 +184,14 @@ export const listDateFilesItems = async (
     prefix
   );
 
+  const totalNum = Object.values(dataFilesItemsNums).reduce(
+    (acc, num) => acc + num,
+    0
+  );
+
   let currentCount = 0;
+  let hasMoreData = false;
+
   for (let fileKey in dataFilesItemsNums) {
     let num = dataFilesItemsNums[fileKey];
 
@@ -184,6 +206,7 @@ export const listDateFilesItems = async (
       result.push(...lines.slice(fileStartIndex, fileEndIndex));
 
       if (result.length >= pageSize) {
+        hasMoreData = currentCount + num > end;
         break;
       }
     }
@@ -193,12 +216,12 @@ export const listDateFilesItems = async (
 
   result = result.slice(0, pageSize); // 确保结果不超过pageSize
 
-  const lastPage = currentCount <= end;
+  const lastPage = page * pageSize < totalNum;
 
   return {
     page,
     pageSize,
     lastPage,
-    data: result
+    data: result,
   };
 };

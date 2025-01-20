@@ -20,7 +20,7 @@ export const getAllNames = async (
   indexFileKey: string
 ): Promise<Array<string>> => {
   let albumNames = await getDataFileItems(client, bucketName, indexFileKey);
-  return albumNames;
+  return albumNames.filter((name) => name !== "");
 };
 
 // 添加 相册|标签
@@ -30,6 +30,10 @@ export const add = async (
   indexFileKey: string,
   addNames: Array<string>
 ): Promise<boolean> => {
+  if(!Array.isArray(addNames)) {
+    throw new InvalidNameError();
+  }
+  
   // 判断相册是否已经存在
   const allNames = await getAllNames(client, bucketName, indexFileKey);
   for (let name of addNames) {

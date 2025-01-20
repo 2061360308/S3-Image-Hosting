@@ -6,11 +6,12 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { Metadata } from "./metadata";
 
 import { calculateHash } from "../utils/base";
-import { isExistImage } from "./base";
+import { isExistImage, validImageTypes } from "./base";
 import { ImageAlreadyExistsError, ImageTypeError } from "../errors";
 import { createdAtAddImages } from "./createAt";
 import { albumAddImages } from "./album";
 import { tagAddImages } from "./tags";
+import { UploadImageResult } from "../types/index.d";
 
 export const uploadImageStatic = async (
   client: S3Client,
@@ -18,10 +19,9 @@ export const uploadImageStatic = async (
   fileData: Blob | Buffer | Uint8Array,
   fileType: ImageType,
   metadata: Metadata
-): Promise<boolean> => {
+): Promise<UploadImageResult> => {
   try {
     const hash = await calculateHash(fileData);
-    const key = `${hash}.${fileType}`;
 
     // Check if image already exists
     // 不管后缀是什么，只要hash相同，就认为是同一张图片
@@ -30,7 +30,7 @@ export const uploadImageStatic = async (
     }
 
     // Check if image type is valid
-    if (!(fileType in ImageType || Object.values(ImageType).includes(fileType))) {
+    if (!validImageTypes.includes(fileType as ImageType)) {
       throw new ImageTypeError();
     }
 
@@ -77,9 +77,16 @@ export const uploadImageStatic = async (
 
     const command = new PutObjectCommand(uploadParams);
     const response = await client.send(command);
-    return true;
+
+    return {
+      success: true,
+      metadata: metadata,
+      hash: hash,
+    };
   } catch (error) {
     console.error("Error uploading image:", error);
-    return false;
+    return {
+      success: false,
+    };
   }
 };

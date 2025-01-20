@@ -1,7 +1,6 @@
-import { IMetadata } from "../types";
+import { IMetadata, ImageType as _ImageType1, PaginatedResult as _PaginatedResult1, Settings, UploadImageResult as _UploadImageResult1 } from "types/index.d";
 import { S3Client } from "@aws-sdk/client-s3";
-import { ImageType, UploadImageResult, PaginatedResult } from "types";
-import { ImageType as _ImageType1, PaginatedResult as _PaginatedResult1, Settings, UploadImageResult as _UploadImageResult1 } from "./types/index";
+import { ImageType, UploadImageResult, PaginatedResult } from "./types/index.d";
 declare class Metadata implements IMetadata {
     createdAt: Date;
     updatedAt: Date;
@@ -57,6 +56,5 @@ export default class S3ImageHosting extends S3ImageHostingMethods {
     tagRemoveImages: (tagName: string, keys: string[]) => Promise<boolean>;
     listCratedAtItems: (page: number, pageSize: number) => Promise<_PaginatedResult1<string>>;
 }
-export default S3ImageHosting;
 
 //# sourceMappingURL=types.d.ts.map

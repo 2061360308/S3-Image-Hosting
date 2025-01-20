@@ -11,7 +11,7 @@ import {
 } from "./dataFile";
 import { deleteFilesWithPrefix } from "../methods/base";
 import { NameAlreadyExistsError, InvalidNameError } from "../errors";
-import { PaginatedResult } from "../types";
+import { PaginatedResult } from "types/index.d";
 
 // 从 相册|标签 索引文件中获取所有 相册|标签 名称
 export const getAllNames = async (

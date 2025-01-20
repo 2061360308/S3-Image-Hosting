@@ -10,7 +10,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "types/*": ["types/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]

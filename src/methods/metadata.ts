@@ -7,7 +7,7 @@ import {
   AlbumNameOverflowError,
 } from "../errors";
 import { toBase64, fromBase64 } from "../utils/base";
-import { IMetadata } from "../types";
+import { IMetadata } from "types/index.d";
 
 export const generateMetadata = (data: Record<string, string>): Metadata => {
   return new Metadata(

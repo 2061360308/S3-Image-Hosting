@@ -3,7 +3,7 @@ import {
   PaginatedResult,
   Settings,
   UploadImageResult,
-} from "./types/index";
+} from "types/index.d";
 import S3ImageHostingMethods from "./methods";
 import { S3Client } from "@aws-sdk/client-s3";
 import { Metadata } from "./methods/metadata";

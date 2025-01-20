@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { imageHosting, images, hashs } from "./global";
 import fs from "fs";
-import { ImageType } from "../types";
+import { ImageType } from "types/index.d";
 
 describe("Add album logo", () => {
   it("should be ['logo']", async () => {

@@ -1,6 +1,6 @@
 import { S3Client } from "@aws-sdk/client-s3";
 import { listDateFilesItems, updateDataFileItems } from "../utils/dataFile";
-import { PaginatedResult } from "../types/index.d";
+import { PaginatedResult } from "types/index.d";
 
 const dataFilesPrefix = ".data/createdAt/";
 

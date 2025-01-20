@@ -10,7 +10,7 @@ import {
   addImages,
   removeImages,
 } from "../utils/classify";
-import { PaginatedResult } from "../types/index.d";
+import { PaginatedResult } from "types/index.d";
 
 export const getAllTagNames = async (
   client: S3Client,

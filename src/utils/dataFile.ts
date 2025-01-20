@@ -12,7 +12,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { isFileExist } from "../methods/base";
 import { streamToString } from "./base";
-import { PaginatedResult } from "../types";
+import { PaginatedResult } from "types/index.d";
 
 export const decodeDataFileSourceContent = (body: string): Array<string> => {
   /**

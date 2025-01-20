@@ -16,7 +16,7 @@ import { MiddlewareStack } from "@aws-sdk/types";
 import { HttpRequest } from "@smithy/protocol-http";
 import { getAllAlbumNames } from "./album";
 import { getAllTagNames } from "./tags";
-import { ImageType } from "../types";
+import { ImageType } from "types/index.d";
 
 export const validImageTypes: Array<ImageType> = ["jpg", "jpeg", "png", "gif", "bmp", "webp", "svg"];
 

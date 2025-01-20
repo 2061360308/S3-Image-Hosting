@@ -1,6 +1,6 @@
 import { S3Client } from "@aws-sdk/client-s3/dist-types/S3Client";
 
-import { ImageType } from "../types/index.d";
+import { ImageType, UploadImageResult } from "types/index.d";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 import { Metadata } from "./metadata";
@@ -11,7 +11,6 @@ import { ImageAlreadyExistsError, ImageTypeError } from "../errors";
 import { createdAtAddImages } from "./createAt";
 import { albumAddImages } from "./album";
 import { tagAddImages } from "./tags";
-import { UploadImageResult } from "../types/index.d";
 
 export const uploadImageStatic = async (
   client: S3Client,

@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import S3ImageHosting from "../index";
-import { Settings } from "../types";
+import { Settings } from "types/index.d";
 
 // 加载 .env 文件中的环境变量
 dotenv.config();

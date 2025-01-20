@@ -38,5 +38,8 @@
     "@aws-sdk/s3-request-presigner": "^3.731.1",
     "@smithy/protocol-http": "^5.0.1",
     "crypto-js": "^4.2.0"
+  },
+  "alias": {
+    "types": "./types"
   }
 }

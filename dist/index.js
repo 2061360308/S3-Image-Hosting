@@ -858,7 +858,7 @@ var $52a45618025e23c1$export$2e2bcd8739ae039 = $52a45618025e23c1$var$S3ImageHost
 
 class $149c1bd638913645$var$S3ImageHosting extends (0, $52a45618025e23c1$export$2e2bcd8739ae039) {
     constructor(settings){
-        super(), this.isExistImage = async (key)=>{
+        super(), this.version = "1.0.0", this.isExistImage = async (key)=>{
             /**
      * Check if the image exists in the bucket
      * @param key The key of the image

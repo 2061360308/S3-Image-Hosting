@@ -9,6 +9,8 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { Metadata } from "./methods/metadata";
 
 class S3ImageHosting extends S3ImageHostingMethods {
+  public readonly version: string = "{{{ VERSION }}}";
+
   settings: Settings;
   client: S3Client;
 

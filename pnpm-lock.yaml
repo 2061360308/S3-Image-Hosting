@@ -24,6 +24,9 @@ importers:
       '@aws-sdk/types':
         specifier: ^3.731.0
         version: 3.731.0
+      '@parcel/config-default':
+        specifier: ^2.13.3
+        version: 2.13.3(@parcel/core@2.13.3(@swc/helpers@0.5.15))(@swc/helpers@0.5.15)(postcss@8.5.1)(relateurl@0.2.7)(terser@5.37.0)(typescript@5.7.3)(uncss@0.17.3)
       '@parcel/packager-ts':
         specifier: 2.13.3
         version: 2.13.3(@parcel/core@2.13.3(@swc/helpers@0.5.15))
@@ -42,6 +45,9 @@ importers:
       parcel:
         specifier: ^2.13.3
         version: 2.13.3(@swc/helpers@0.5.15)(postcss@8.5.1)(relateurl@0.2.7)(terser@5.37.0)(typescript@5.7.3)(uncss@0.17.3)
+      parcel-transformer-env-variables-injection:
+        specifier: ^0.1.2
+        version: 0.1.2
       typescript:
         specifier: '>=3.0.0'
         version: 5.7.3
@@ -1887,6 +1893,10 @@ packages:
 
   ordered-binary@1.5.3:
     resolution: {integrity: sha512-oGFr3T+pYdTGJ+YFEILMpS3es+GiIbs9h/XQrclBXUtd44ey7XwfsMzM31f64I1SQOawDoDr/D823kNCADI8TA==}
+
+  parcel-transformer-env-variables-injection@0.1.2:
+    resolution: {integrity: sha512-B8SkRY2gVje3Y3m/Vx4d9Z0Y7cRzDbC7S86bOu/nikwTamuaOHo34EEftABhBkHz4wVQP8ul/ccR3u384oD6AA==}
+    engines: {parcel: 2.x}
 
   parcel@2.13.3:
     resolution: {integrity: sha512-8GrC8C7J8mwRpAlk7EJ7lwdFTbCN+dcXH2gy5AsEs9pLfzo9wvxOTx6W0fzSlvCOvZOita+8GdfYlGfEt0tRgA==}
@@ -4747,6 +4757,8 @@ snapshots:
     optional: true
 
   ordered-binary@1.5.3: {}
+
+  parcel-transformer-env-variables-injection@0.1.2: {}
 
   parcel@2.13.3(@swc/helpers@0.5.15)(postcss@8.5.1)(relateurl@0.2.7)(terser@5.37.0)(typescript@5.7.3)(uncss@0.17.3):
     dependencies:

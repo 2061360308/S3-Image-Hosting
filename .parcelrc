@@ -1,7 +1,13 @@
 {
   "extends": "@parcel/config-default",
   "transformers": {
-    "*.js": ["parcel-transformer-env-variables-injection", "..."],
-    "*.ts": ["parcel-transformer-env-variables-injection", "..."]
+    "*.js": [
+      "parcel-transformer-env-variables-injection",
+      "@parcel/transformer-js"
+    ],
+    "*.ts": [
+      "parcel-transformer-env-variables-injection",
+      "@parcel/transformer-js"
+    ]
   }
 }

@@ -31,18 +31,24 @@
   "license": "MIT",
   "files": [
     "dist",
+    "types",
+    "LICENSE",
     "README.md"
   ],
   "devDependencies": {
     "@aws-sdk/types": "^3.731.0",
     "@parcel/config-default": "^2.13.3",
+    "@parcel/core": "^2.13.3",
     "@parcel/packager-ts": "2.13.3",
     "@parcel/resolver-glob": "^2.13.3",
+    "@parcel/transformer-js": "^2.13.3",
     "@parcel/transformer-typescript-types": "2.13.3",
     "@types/crypto-js": "^4.2.2",
     "dotenv": "^16.4.7",
     "parcel": "^2.13.3",
     "parcel-transformer-env-variables-injection": "^0.1.2",
+    "process": "^0.11.10",
+    "tslib": "^2.8.1",
     "typescript": ">=3.0.0",
     "vitest": "^3.0.2"
   },

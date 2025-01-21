@@ -22,6 +22,9 @@ fileContent = fileContent.replace(/export default S3ImageHosting;/, "");
 // 将 "../types" 替换成 "types/index.d"
 fileContent = fileContent.replace(/"..\/types"/g, '"types/index.d"');
 
+// 将 "types/index.d" 替换成 "../types/index.d"
+fileContent = fileContent.replace(/"types\/index.d"/g, '"../types/index.d"');
+
 // 写回文件
 writeFileSync(filePath, fileContent, "utf8");
 

@@ -11,8 +11,9 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 import { isFileExist } from "../methods/base";
-import { streamToString } from "./base";
+import { streamToString } from "./index";
 import { PaginatedResult } from "types/index.d";
+import { getCacheInstance } from "./index";
 
 export const decodeDataFileSourceContent = (body: string): Array<string> => {
   /**
@@ -30,6 +31,106 @@ export const encodeDataFileSourceContent = (data: Array<string>): string => {
    * 编码数据文件原始内容
    */
   return data.join("\n") + "\n";
+};
+
+export const getDataFileItems = async (
+  client: S3Client,
+  bucketName: string,
+  key: string
+): Promise<Array<string>> => {
+  /**
+   * 获取数据文件中的所有条目
+   */
+  let ETag = await isFileExist(client, bucketName, key);
+
+  if (!ETag) {
+    return [];
+  } else {
+
+    // 尝试从缓存中获取数据
+    const cache = await getCacheInstance();
+    const cacheItem = await cache.getDateItemCache(key);
+    if(cacheItem && cacheItem.etag === ETag) {
+      console.log("命中缓存", key);
+      return cacheItem.value;
+    } else {
+      const command = new GetObjectCommand({
+        Bucket: bucketName,
+        Key: key,
+      });
+      const response = await client.send(command);
+      const body = await streamToString(response.Body);
+      const data =  decodeDataFileSourceContent(body);
+      // 更新缓存
+      await cache.setDateItemCache(key, data, ETag);
+      console.log("添加新的缓存", key);
+
+      return data;
+    }
+  }
+};
+
+export const updateDataFileItems = async (
+  client: S3Client,
+  bucketName: string,
+  key: string,
+  type: "add" | "remove",
+  value: Array<string>
+): Promise<boolean> => {
+  /**
+   * 更新数据文件中的条目
+   */
+  // 获取原始数据
+  let data = await getDataFileItems(client, bucketName, key);
+
+  // 更新数据
+  if (type === "add") {
+    data = data.concat(value);
+  } else if (type === "remove") {
+    data = data.filter((item) => !value.includes(item));
+  }
+
+  // 如果数据为空，直接删除远程文件
+  if (data.length === 0) {
+    try {
+      const command = new DeleteObjectCommand({
+        Bucket: bucketName,
+        Key: key,
+      });
+      await client.send(command);
+
+      // 删除缓存
+      const cache = await getCacheInstance();
+      await cache.removeDateItemCache(key);
+
+      return true;
+    } catch (error) {
+      console.error(`Error deleting data file ${key}:`, error);
+      return false;
+    }
+  }
+
+  // 如果数据不为空，则需要上传数据
+  try {
+    const uploadParams = {
+      Bucket: bucketName,
+      Key: key,
+      Body: encodeDataFileSourceContent(data),
+    };
+
+    const command = new PutObjectCommand(uploadParams);
+    const response = await client.send(command);
+
+    // 更新缓存
+    const cache = await getCacheInstance();
+    await cache.setDateItemCache(key, data, response.ETag as string);
+    console.log("更新缓存", key);
+
+    return true;
+  } catch (error) {
+    console.error("Error updating metadata global file:", error);
+    return false;
+  }
 };
 
 export const getDataFilesSizes = async (
@@ -91,81 +192,6 @@ export const getDataFilesItemsNums = async (
   return sortedNums;
 };
 
-export const getDataFileItems = async (
-  client: S3Client,
-  bucketName: string,
-  key: string
-): Promise<Array<string>> => {
-  /**
-   * 获取数据文件中的所有条目
-   */
-  let hasFile = await isFileExist(client, bucketName, key);
-
-  if (!hasFile) {
-    return [];
-  } else {
-    const command = new GetObjectCommand({
-      Bucket: bucketName,
-      Key: key,
-    });
-    const response = await client.send(command);
-    const body = await streamToString(response.Body);
-    return decodeDataFileSourceContent(body);
-  }
-};
-
-export const updateDataFileItems = async (
-  client: S3Client,
-  bucketName: string,
-  key: string,
-  type: "add" | "remove",
-  value: Array<string>
-): Promise<boolean> => {
-  /**
-   * 更新数据文件中的条目
-   */
-  // 获取原始数据
-  let data = await getDataFileItems(client, bucketName, key);
-
-  // 更新数据
-  if (type === "add") {
-    data = data.concat(value);
-  } else if (type === "remove") {
-    data = data.filter((item) => !value.includes(item));
-  }
-
-  // 如果数据为空，直接删除远程文件
-  if (data.length === 0) {
-    try {
-      const command = new DeleteObjectCommand({
-        Bucket: bucketName,
-        Key: key,
-      });
-      await client.send(command);
-      return true;
-    } catch (error) {
-      console.error(`Error deleting data file ${key}:`, error);
-      return false;
-    }
-  }
-
-  // 如果数据不为空，则需要上传数据
-  try {
-    const uploadParams = {
-      Bucket: bucketName,
-      Key: key,
-      Body: encodeDataFileSourceContent(data),
-    };
-
-    const command = new PutObjectCommand(uploadParams);
-    await client.send(command);
-    return true;
-  } catch (error) {
-    console.error("Error updating metadata global file:", error);
-    return false;
-  }
-};
-
 export const listDateFilesItems = async (
   client: S3Client,
   bucketName: string,
@@ -190,7 +216,6 @@ export const listDateFilesItems = async (
   );
 
   let currentCount = 0;
-  let hasMoreData = false;
 
   for (let fileKey in dataFilesItemsNums) {
     let num = dataFilesItemsNums[fileKey];
@@ -206,7 +231,6 @@ export const listDateFilesItems = async (
       result.push(...lines.slice(fileStartIndex, fileEndIndex));
 
       if (result.length >= pageSize) {
-        hasMoreData = currentCount + num > end;
         break;
       }
     }

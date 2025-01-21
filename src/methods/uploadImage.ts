@@ -5,7 +5,7 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 import { Metadata } from "./metadata";
 
-import { calculateHash } from "../utils/base";
+import { calculateHash } from "../utils/index";
 import { isExistImage, validImageTypes } from "./base";
 import { ImageAlreadyExistsError, ImageTypeError } from "../errors";
 import { createdAtAddImages } from "./createAt";
@@ -66,6 +66,15 @@ export const uploadImageStatic = async (
         }
       }
     }
+
+    console.log(
+      "Uploading image:",
+      client,
+      bucketName,
+      fileData,
+      fileType,
+      metadata
+    );
 
     const uploadParams = {
       Bucket: bucketName,

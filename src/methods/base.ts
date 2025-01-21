@@ -18,7 +18,15 @@ import { getAllAlbumNames } from "./album";
 import { getAllTagNames } from "./tags";
 import { ImageType } from "types/index.d";
 
-export const validImageTypes: Array<ImageType> = ["jpg", "jpeg", "png", "gif", "bmp", "webp", "svg"];
+export const validImageTypes: Array<ImageType> = [
+  "jpg",
+  "jpeg",
+  "png",
+  "gif",
+  "bmp",
+  "webp",
+  "svg",
+];
 
 // 是否存在图片
 export const isExistImage = async (
@@ -68,7 +76,7 @@ export const isFileExist = async (
   client: S3Client,
   bucketName: string,
   key: string
-): Promise<boolean> => {
+): Promise<string | null> => {
   /**
    * 是否存在文件
    */
@@ -77,18 +85,24 @@ export const isFileExist = async (
       Bucket: bucketName,
       Key: key,
     });
-    await client.send(command);
-    return true;
+    let response = await client.send(command);
+    return response.ETag as string;
   } catch (error: unknown) {
     if (
       error instanceof Error &&
       (error.name === "NotFound" ||
         (error as any).$metadata?.httpStatusCode === 404)
     ) {
-      return false;
+      console.log(
+        `we received an error that the file(${key}) does not exist, so the check(isFileExist) result is false`
+      );
+      return null;
     } else {
-      console.error("Error checking file existence:", error);
-      return false;
+      console.error(
+        "we received an unexpected error, but the check(isFileExist) result is wiil still to be false",
+        error
+      );
+      return null;
     }
   }
 };
@@ -307,7 +321,7 @@ export const getImageSignedUrl = async (
       Bucket: bucketName,
       Key: key,
     });
-  
+
     const signedUrl = await getSignedUrl(client, command, { expiresIn });
     return signedUrl;
   } catch (error) {

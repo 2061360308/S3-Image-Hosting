@@ -17,6 +17,6 @@
       "types/*": ["types/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "types/base64.d.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

@@ -63,5 +63,9 @@
   },
   "alias": {
     "types": "./types"
+  },
+  "optionalDependencies": {
+    "dexie": "^4.0.11",
+    "node-cache": "^5.1.2"
   }
 }

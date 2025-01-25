@@ -1,5 +1,11 @@
 import NodeCache from "node-cache";
 
+let NodeCacheLib: any = NodeCache;
+
+if (typeof window !== 'undefined'){
+  NodeCacheLib = null;
+}
+
 interface DateItemCache {
   key: string;
   value: any;

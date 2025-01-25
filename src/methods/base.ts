@@ -28,6 +28,23 @@ export const validImageTypes: Array<ImageType> = [
   "svg",
 ];
 
+export const checkSettingsValid = async (
+  client: S3Client,
+  bucketName: string
+): Promise<boolean> => {
+  try {
+    const command = new ListObjectsV2Command({
+      Bucket: bucketName,
+      MaxKeys: 1,
+    });
+    const response = await client.send(command);
+    return true;
+  } catch (error) {
+    console.error("Error checking bucket:", error);
+    return false;
+  }
+};
+
 // 是否存在图片
 export const isExistImage = async (
   client: S3Client,

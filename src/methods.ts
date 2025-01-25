@@ -1,9 +1,7 @@
-import { isExistImage } from "./methods/base";
+import { isExistImage, getImageMetadata, getImageSignedUrl, checkSettingsValid } from "./methods/base";
 import { createMatadata } from "./methods/metadata";
 import { uploadImageStatic } from "./methods/uploadImage";
 import { deleteImageStatic } from "./methods/deleteImage";
-
-import { getImageMetadata, getImageSignedUrl } from "./methods/base";
 
 import {
   getAllAlbumNames, // 从 相册 索引文件中获取所有相册名称
@@ -26,6 +24,7 @@ import {
 import { listCratedAtItems } from "./methods/createAt";
 
 class S3ImageHostingMethods {
+  public static checkSettingsValidStatic = checkSettingsValid;
   public static isExistImageStatic = isExistImage;
   public static createMatadataStatic = createMatadata;
   public static uploadImageStatic = uploadImageStatic;

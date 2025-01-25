@@ -29,6 +29,14 @@ class S3ImageHosting extends S3ImageHostingMethods {
     });
   }
 
+  public checkSettingsValid = async (): Promise<boolean> => {
+    /**
+     * Check if the Settings is valid
+     * @returns A boolean value
+     */
+    return S3ImageHosting.checkSettingsValidStatic(this.client, this.settings.bucket);
+  }
+
   public isExistImage = async (key: string): Promise<boolean> => {
     /**
      * Check if the image exists in the bucket

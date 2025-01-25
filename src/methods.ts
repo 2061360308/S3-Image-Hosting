@@ -1,3 +1,4 @@
+import { calculateHash } from "./utils/index";
 import { isExistImage, getImageMetadata, getImageSignedUrl, checkSettingsValid } from "./methods/base";
 import { createMatadata } from "./methods/metadata";
 import { uploadImageStatic } from "./methods/uploadImage";
@@ -24,6 +25,7 @@ import {
 import { listCratedAtItems } from "./methods/createAt";
 
 class S3ImageHostingMethods {
+  public static calculateHashStatic = calculateHash;
   public static checkSettingsValidStatic = checkSettingsValid;
   public static isExistImageStatic = isExistImage;
   public static createMatadataStatic = createMatadata;

@@ -37,6 +37,15 @@ class S3ImageHosting extends S3ImageHostingMethods {
     return S3ImageHosting.checkSettingsValidStatic(this.client, this.settings.bucket);
   }
 
+  public calculateHash = async (fileData: Blob | Buffer | Uint8Array): Promise<string> => {
+    /**
+     * Calculate the hash of the image
+     * @param fileData The image data  type: Blob | Buffer | Uint8Array
+     * @returns A string
+     */
+    return S3ImageHosting.calculateHashStatic(fileData);
+  }
+
   public isExistImage = async (key: string): Promise<boolean> => {
     /**
      * Check if the image exists in the bucket

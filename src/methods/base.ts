@@ -320,7 +320,7 @@ export const getImageKeyByHash = async (
     }
     throw new Error("Image not found");
   } catch (error) {
-    console.error("Error getting image metadata by prefix:", error);
+    console.error("Error getting image key by prefix:", error);
     throw new Error("Image not found");
   }
 };

@@ -6,7 +6,7 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { Metadata } from "./metadata";
 
 import { calculateHash } from "../utils/index";
-import { getImageMetadata, isExistImage, validImageTypes } from "./base";
+import { isExistImage, validImageTypes } from "./base";
 import { ImageAlreadyExistsError, ImageTypeError } from "../errors";
 import { createdAtAddImages } from "./createAt";
 import { albumAddImages } from "./album";
@@ -26,14 +26,7 @@ export const uploadImageStatic = async (
     // 不管后缀是什么，只要hash相同，就认为是同一张图片
     if (await isExistImage(client, bucketName, hash)) {
       // 获取到图片的元数据
-      const pre_metadata = await getImageMetadata(client, bucketName, hash);
-
-      // 直接返回之前图片的数据
-      return {
-        success: true,
-        metadata: pre_metadata,
-        hash: hash,
-      }
+      throw new ImageAlreadyExistsError();
     }
 
     // Check if image type is valid

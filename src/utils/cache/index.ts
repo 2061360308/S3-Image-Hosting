@@ -1,12 +1,14 @@
-let cacheInit;
+let cacheInit: any;
 
-if (typeof window !== "undefined") {
-  // 创建 Dexie 数据库实例
-  const { browserCacheInit } = await import('./browser');
-  cacheInit = browserCacheInit;
-} else {
-  const { nodeCacheInit } = await import('./node');
-  cacheInit = nodeCacheInit;
+const init = async () => {
+  if (typeof window !== "undefined") {
+    // 创建 Dexie 数据库实例
+    const { browserCacheInit } = await import('./browser');
+    cacheInit = browserCacheInit;
+  } else {
+    const { nodeCacheInit } = await import('./node');
+    cacheInit = nodeCacheInit;
+  }
 }
 
 interface DateItemCache {
@@ -23,5 +25,6 @@ interface ResponseCache {
 }
 
 export const getCacheInstance = async (): Promise<ResponseCache> => {
+  await init();
   return await cacheInit();
 };

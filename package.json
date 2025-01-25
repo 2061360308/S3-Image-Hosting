@@ -1,6 +1,6 @@
 {
   "name": "s3-image-hosting",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "纯前端、浏览器可用、超轻量的基于对象存储的图床管理工具",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
